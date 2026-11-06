@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Explorer - transformation atlas</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main>
+  <h1>Explorer</h1>
+  <p class="muted small">
+    One row per transformation (reaction centre signature). Listed: everything seen in Rhea and every lab
+    transformation seen in two patent reactions or confirmed by both atom mappers; the remaining lab singletons
+    are in the <a href="index.html#data">downloads</a>. Search matches the summary, the pattern, reagent and
+    enzyme labels, the literature family and verdict, and the signature ID; all words must match (e.g.
+    <code>C-N formed</code>, <code>Br-C broken</code>, <code>1.14.</code>, <code>hydride</code>, <code>suzuki</code>).
+    At L1x, the most used lab-only transformations also carry the literature verdict and the near-miss result.
+  </p>
+  <div class="controls">
+    <label>Level <select id="level"></select></label>
+    <span id="domains"></span>
+    <label><input type="checkbox" id="robust"> robust only</label>
+    <label><input type="checkbox" id="yield"> lab: with reported yield</label>
+    <label><input type="checkbox" id="brenda"> in BRENDA</label>
+    <label><input type="checkbox" id="rbc"> in RetroBioCat</label>
+    <label><input type="checkbox" id="lit"> literature-checked</label>
+    <label><input type="checkbox" id="near"> near misses</label>
+    <label>Sort <select id="sort">
+      <option value="lab_records">lab records</option>
+      <option value="lab_reactions">lab reactions</option>
+      <option value="enzyme_reactions">enzyme reactions</option>
+      <option value="rhea_reactions">Rhea reactions</option>
+      <option value="brenda_reactions">BRENDA reactions</option>
+      <option value="lab_first_year">first patent year</option>
+      <option value="size">centre size</option>
+    </select></label>
+    <input type="search" id="q" placeholder="search, e.g. C=O -> C-O">
+  </div>
+  <p id="level-text" class="small muted"></p>
+  <div class="pager">
+    <button id="prev">&larr;</button><span id="page"></span><button id="next">&rarr;</button>
+    <span id="count" class="muted"></span>
+    <button id="csv" title="Download the filtered rows as CSV">CSV</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Transformation</th><th>Pattern (SMARTS)</th><th>Domain · literature</th>
+        <th class="num">Lab reactions</th><th class="num">records</th><th class="num">with yield</th>
+        <th class="num">first year</th><th class="num">Enzyme reactions</th><th class="num">Rhea</th>
+        <th class="num">BRENDA</th><th>Lab reagents</th><th>Enzyme EC | cofactors</th>
+      </tr></thead>
+      <tbody id="rows"><tr><td colspan="12" class="muted">loading&hellip;</td></tr></tbody>
+    </table>
+  </div>
+</main>
+<script type="module" src="assets/explorer.js"></script>
+</body>
+</html>

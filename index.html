@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transformation atlas: lab vs enzyme chemistry</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main>
+  <h1>Transformation atlas: lab vs enzyme chemistry</h1>
+  <p>
+    Every reaction in two public collections is reduced to its <em>transformation</em>: the atoms whose bonding
+    changes, described independently of the rest of the molecule, so ethanal&nbsp;&rarr;&nbsp;ethanol and
+    propanal&nbsp;&rarr;&nbsp;propan-1-ol are one transformation. Lab chemistry comes from 3.7 million reaction
+    records text-mined from US patents (1976&ndash;2016); enzyme chemistry from the curated Rhea database, with
+    BRENDA (via EnzymeMap) and RetroBioCat as further enzyme sources. The
+    <a href="explorer.html">explorer</a> lists the transformations with examples, reagent classes and enzymes;
+    all tables are also JSON and CSV (see <a href="#data">Data &amp; API</a>). The
+    <a href="report.html">report</a> has the results: the size of the space, the overlap, a literature check of
+    the most used lab-only chemistry, what BRENDA and RetroBioCat add, and near misses.
+  </p>
+  <p class="small muted" id="provenance"></p>
+
+  <h2>Key numbers</h2>
+  <p class="small">
+    <label>Count <select id="definition">
+      <option value="consensus or support>=2">robust transformations (seen twice or confirmed by both atom mappers)</option>
+      <option value="all">all transformations</option>
+    </select></label>
+    <label style="margin-left:1rem">Lab set <select id="labset">
+      <option value="all">all patent reactions</option>
+      <option value="yield">only reactions with a reported yield</option>
+    </select></label>
+  </p>
+  <div class="table-wrap"><table id="overlap"></table></div>
+  <p class="small muted">
+    "Enzyme" is Rhea's natural tier (reactions with an annotated enzyme) in the physiological or an unannotated
+    direction. Precedent columns weight by reactions instead of transformations: most enzymatic reactions use a
+    transformation that also occurs in patents, while most distinct transformations of either side do not occur
+    on the other.
+  </p>
+
+  <h2 id="definitions">What the terms mean</h2>
+  <dl class="kv">
+    <dt>lab</dt><dd>A reaction reported in the experimental section of a US patent grant or application
+      (Lowe's text-mined USPTO set). These are reactions someone describes having carried out, not computer
+      predictions. Patents can contain prophetic examples; a reported yield (55% of records) is the strongest
+      evidence available that the experiment was run, and every count can be restricted to those reactions.</dd>
+    <dt>lab only</dt><dd>The transformation occurs in patent reactions and in no Rhea reaction, in either direction.
+      It means that no <em>catalogued natural</em> enzymatic reaction does it. Transformation pages also show what
+      BRENDA (promiscuous activity of natural enzymes) and RetroBioCat (synthetic biocatalysis, public sample only)
+      add; for the 500 most used lab-only transformations, a literature check looked for any protein catalyst.</dd>
+    <dt>literature precedent</dt><dd>For a checked lab-only transformation: whether a natural, engineered, designed or
+      artificial enzyme has been reported to do it, and what it needed beyond the 20 canonical amino acids and
+      natural cofactors.</dd>
+    <dt>near miss</dt><dd>A lab-only transformation that one edit (another leaving group, one hydrogen more or fewer,
+      aliphatic instead of aromatic, another reactant's point of view) turns into a transformation enzymes do.</dd>
+    <dt>enzyme</dt><dd>Rhea reaction with at least one enzyme (UniProt/Swiss-Prot link or EC number), counted once per
+      Rhea master reaction.</dd>
+    <dt>Rhea without enzyme</dt><dd>Rhea reactions with no enzyme annotated, including those Rhea marks as able to occur
+      spontaneously, and enzymatic reactions only in their non-physiological direction.</dd>
+    <dt>robust</dt><dd>Seen in at least two distinct reactions, or RXNMapper and Indigo atom maps give the same
+      signature. Most singletons are real but some are mapping or text-mining errors.</dd>
+    <dt>reagent classes</dt><dd>Families of the agents (reagents, catalysts, solvents) recorded with a patent reaction,
+      e.g. hydride, Pd catalysis, base: the lab "how".</dd>
+    <dt>mechanism proxy</dt><dd>EC sub-subclass plus cofactor classes (from the Rhea equation and Swiss-Prot): the enzyme
+      "how", validated against M-CSA curated mechanisms.</dd>
+  </dl>
+  <h3>Levels of description</h3>
+  <div class="table-wrap"><table id="levels"></table></div>
+
+  <h2>Figures</h2>
+  <div class="grid" id="figures"></div>
+
+  <h2 id="data">Data &amp; API</h2>
+  <p>
+    The site is static: every page reads JSON files that programs can fetch directly (relative to this page).
+    Signatures are 16-hex-digit IDs, stable for a given level definition. <span id="gzip-note"></span>
+  </p>
+  <div class="table-wrap"><table id="api"></table></div>
+  <pre class="small"><code id="api-example"></code></pre>
+
+  <h2>Sources and licences</h2>
+  <div id="sources"></div>
+  <p class="small muted">
+    Derived data follow the source licences (USPTO extraction CC0; Rhea, UniProt, M-CSA and EnzymeMap CC BY 4.0;
+    the RetroBioCat sample CC BY-NC 4.0). Built with RXNMapper, Indigo and RDKit; depictions by RDKit.js.
+  </p>
+</main>
+<script type="module" src="assets/overview.js"></script>
+</body>
+</html>
